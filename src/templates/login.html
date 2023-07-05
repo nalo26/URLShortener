@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Login</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification is-danger">{{ messages[0] }}</div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" action="/">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="token" placeholder="Token">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="px-8 py-6 mt-4 text-left bg-white shadow-slate-400 shadow-lg rounded-lg w-1/4">
+            <h3 class="text-2xl font-bold text-center">Login</h3>
+            <form method="POST" action="/">
+                <div class="mt-4">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="bg-red-100 border border-red-400 text-red-500 px-4 py-2 rounded relative">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <input type="password" placeholder="Token" name="token" class="w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:ring-1 focus:ring-purple-600">
+                    <div class="flex items-baseline justify-center">
+                        <button class="px-6 py-2 mt-4 text-white bg-purple-800 rounded-lg hover:bg-purple-950">Login</button>
+                    </div>
                 </div>
-            </div>
-            <button class="button is-block is-info is-large is-fullwidth">Login</button>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

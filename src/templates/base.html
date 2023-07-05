@@ -4,18 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>nalo's URL Shortener</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <section class="hero is-primary is-fullheight">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-    </section>
+<body class="bg-black font-mono">
+    <div class="w-full m-0 p-0 bg-purple-950 bg-opacity-50">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 
 </html>
