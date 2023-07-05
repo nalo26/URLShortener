@@ -28,12 +28,8 @@ def create_app():
     def load_user(_id):
         return Access.query.get(int(_id))
 
-    from .auth import auth as auth_blueprint
+    from .views import views as views_blueprint
 
-    app.register_blueprint(auth_blueprint)
-
-    from .main import main as main_blueprint
-
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(views_blueprint)
 
     return app
