@@ -1,4 +1,7 @@
 import enum
+
+from flask_login import UserMixin
+
 from . import db
 
 
@@ -7,7 +10,7 @@ class Level(enum.Enum):
     WRITE = "write"
 
 
-class Access(db.Model):
+class Access(UserMixin, db.Model):
     __tablename__ = "access"
     id = db.Column(db.Integer, primary_key=True)
     level = db.Column(db.Enum(Level), nullable=False, default=Level.READ)

@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -16,6 +17,16 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
     db.init_app(app)
+
+    login_manager = LoginManager()
+    login_manager.login_view = "main.index"
+    login_manager.init_app(app)
+
+    from .models import Access
+
+    @login_manager.user_loader
+    def load_user(_id):
+        return Access.query.get(int(_id))
 
     from .auth import auth as auth_blueprint
 
