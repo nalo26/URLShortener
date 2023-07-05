@@ -21,8 +21,7 @@ class Access(UserMixin, db.Model):
 
 class Redirection(db.Model):
     __tablename__ = "redirection"
-    id = db.Column(db.Integer, primary_key=True)
-    source = db.Column(db.String(200), nullable=False)
+    source = db.Column(db.String(200), primary_key=True)
     target = db.Column(db.String(1000), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=db.func.now())
     access_count = db.Column(db.Integer, nullable=False, default=0)

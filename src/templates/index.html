@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-You're logged in lol
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="px-8 py-6 mt-4 text-left bg-white shadow-slate-400 shadow-lg rounded-lg w-2/3">
+            <table class="min-w-full text-left">
+                <thead class="border-b font-medium dark:border-neutral-500">
+                    <tr>
+                        <th scope="col" class="px-6 py-4">Source</th>
+                        <th scope="col" class="px-6 py-4">Target</th>
+                        <th scope="col" class="px-6 py-4">Date</th>
+                        <th scope="col" class="px-6 py-4">Visits</th>
+                        <th scope="col" class="px-6 py-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for redirection in redirections %}
+                        <tr class="border-b dark:border-neutral-500">
+                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="/{{ redirection.source }}">{{ redirection.source }}</a></td>
+                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="{{ redirection.target }}">{{ redirection.target }}</a></td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ redirection.created_at }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ redirection.access_count }}</td>
+                            <td class="whitespace-nowrap px-6 py-4"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
