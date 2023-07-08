@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
-from flask_login import login_user, current_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import check_password_hash
 
 from .models import Access, Redirection
@@ -33,10 +33,16 @@ def index_post():
                 db.session.commit()
                 return redirect(url_for("views.index"))
 
-        flash("Invalid token")
+        flash("Invalid token", "error")
         return redirect(url_for("views.index"))
 
     # user logged in
+    if request.json and request.json.get("method") == "logout":
+        # logout
+        logout_user()
+        flash("Successfully logged out", "success")
+        return "OK", 200
+
     # TODO: do things
     return redirect(url_for("views.index"))
 

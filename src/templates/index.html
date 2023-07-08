@@ -27,4 +27,12 @@
             </table>
         </div>
     </div>
+
+    <div>
+        <button id="logout" class="px-6 py-2 mt-4 fixed bottom-4 right-4 text-white bg-purple-800 rounded-lg hover:bg-purple-950">Logout</button>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
 {% endblock %}
