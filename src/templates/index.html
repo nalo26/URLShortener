@@ -3,24 +3,35 @@
 {% block content %}
     <div class="flex items-center justify-center min-h-screen">
         <div class="px-8 py-6 mt-4 text-left bg-white shadow-slate-400 shadow-lg rounded-lg w-2/3">
-            <table class="min-w-full text-left">
+            <h3 class="text-2xl font-bold text-center">&lt; All redirections &gt;</h3>
+            <table class="min-w-full text-left mt-4">
                 <thead class="border-b font-medium dark:border-neutral-500">
                     <tr>
                         <th scope="col" class="px-6 py-4">Source</th>
+                        <th scope="col" class="py-4"></th>
                         <th scope="col" class="px-6 py-4">Target</th>
                         <th scope="col" class="px-6 py-4">Date</th>
-                        <th scope="col" class="px-6 py-4">Visits</th>
-                        <th scope="col" class="px-6 py-4">Actions</th>
+                        <th scope="col" class="px-6 py-4">Views</th>
+                        {% if can_write %}<th scope="col" class="px-6 py-4">Actions</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for redirection in redirections %}
                         <tr class="border-b dark:border-neutral-500">
-                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="/{{ redirection.source }}">{{ redirection.source }}</a></td>
+                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="/{{ redirection.source }}">/{{ redirection.source }}</a></td>
+                            <td class="text-center text-2xl">🠖</td>
                             <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="{{ redirection.target }}">{{ redirection.target }}</a></td>
-                            <td class="whitespace-nowrap px-6 py-4">{{ redirection.created_at }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 cursor-help underline decoration-dotted" title="{{ redirection.created_at }}">
+                                {{ redirection.created_at.strftime("%d/%m/%Y") }}
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4">{{ redirection.access_count }}</td>
-                            <td class="whitespace-nowrap px-6 py-4"></td>
+                            {% if can_write %}
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    <span class="save text-blue-700 cursor-pointer fa-solid fa-floppy-disk"></span>
+                                    &nbsp;
+                                    <span class="delete text-red-600 cursor-pointer fa-solid fa-trash"></span>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -29,10 +40,13 @@
     </div>
 
     <div>
-        <button id="logout" class="px-6 py-2 mt-4 fixed bottom-4 right-4 text-white bg-purple-800 rounded-lg hover:bg-purple-950">Logout</button>
+        <button id="logout" class="px-6 py-2 mt-4 fixed bottom-4 right-4 text-white bg-purple-800 rounded-lg hover:bg-purple-950">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
     </div>
 {% endblock %}
 
 {% block script %}
 <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+<script src="{{ url_for('static', filename='js/actions.js') }}"></script>
 {% endblock %}

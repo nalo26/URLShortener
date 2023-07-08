@@ -19,7 +19,8 @@ def create_app():
     db.init_app(app)
 
     login_manager = LoginManager()
-    login_manager.login_view = "main.index"
+    login_manager.login_view = "views.index"
+    login_manager.login_message_category = "error"
     login_manager.init_app(app)
 
     from .models import Access

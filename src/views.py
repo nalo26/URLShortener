@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 
-from .models import Access, Redirection
+from .models import Level, Access, Redirection
 from . import db
 
 views = Blueprint("views", __name__)
@@ -16,15 +16,16 @@ def index():
 
     # user logged in
     ctx = {
-        "redirections": Redirection.query.all(),
+        "redirections": Redirection.query.order_by(Redirection.created_at.desc()).all(),
+        "can_write": current_user.level == Level.WRITE,
     }
     return render_template("index.html", **ctx)
 
 
 @views.route("/", methods=["POST"])
-def index_post():
+def login_logout():
+    # user not logged in
     if not (current_user and current_user.is_authenticated):
-        # user not logged in
         token = request.form.get("token", "")
         for access in Access.query.all():
             if check_password_hash(access.token, token):
@@ -43,7 +44,6 @@ def index_post():
         flash("Successfully logged out", "success")
         return "OK", 200
 
-    # TODO: do things
     return redirect(url_for("views.index"))
 
 
@@ -56,3 +56,56 @@ def redirection(path):
     redirection.access_count += 1
     db.session.commit()
     return redirect(redirection.target)
+
+
+@views.route("/<path:path>", methods=["PUT"])
+@login_required
+def create_redirection(path):
+    if current_user.level != Level.WRITE:
+        return "Forbidden", 403
+
+    redirection = Redirection.query.get(path)
+    if redirection is not None:
+        return "Conflict", 409
+
+    target = request.json.get("target")
+    if target is None:
+        return "Bad Request", 400
+
+    redirection = Redirection(source=path, target=target)
+    db.session.add(redirection)
+    db.session.commit()
+
+    return "OK", 200
+
+
+@views.route("/<path:path>", methods=["POST"])
+@login_required
+def update_redirection(path):
+    if current_user.level != Level.WRITE:
+        return "Forbidden", 403
+
+    redirection = Redirection.query.get(path)
+    if redirection is None:
+        return "Not Found", 404
+
+    redirection.target = request.json.get("target", redirection.target)
+    db.session.commit()
+
+    return "OK", 200
+
+
+@views.route("/<path:path>", methods=["DELETE"])
+@login_required
+def delete_redirection(path):
+    if current_user.level != Level.WRITE:
+        return "Forbidden", 403
+
+    redirection = Redirection.query.get(path)
+    if redirection is None:
+        return "Not Found", 404
+
+    db.session.delete(redirection)
+    db.session.commit()
+
+    return "OK", 200
