@@ -19,32 +19,36 @@
                     {% if can_write %}
                         <tr class="border-b dark:border-neutral-500">
                             <td class="whitespace-nowrap px-3 py-1">
-                                <input type="text" id="source" class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent" placeholder="Source">
+                                <input type="text" id="source" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-600" placeholder="Source">
                             </td>
                             <td class="text-center text-2xl">🠖</td>
                             <td class="whitespace-nowrap px-3 py-1">
-                                <input type="text" id="target" class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent" placeholder="Target">
+                                <input type="text" id="target" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-600" placeholder="Target">
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">-</td>
                             <td class="whitespace-nowrap px-6 py-4">-</td>
                             <td class="whitespace-nowrap px-6 text-2xl">
-                                <span class="add text-green-600 cursor-pointer fa-solid fa-square-plus"></span>
+                                <span class="add text-green-600 cursor-pointer fa-solid fa-square-plus" title="Add"></span>
                             </td>
                         </tr>
                     {% endif %}
                     {% for redirection in redirections %}
                         <tr class="border-b dark:border-neutral-500">
-                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="/{{ redirection.source }}">/{{ redirection.source[:30] }}</a></td>
+                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline">
+                                <a href="/{{ redirection.source }}">/{{ format_url(redirection.source, 30)  }}</a>
+                            </td>
                             <td class="text-center text-2xl">🠖</td>
-                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline"><a href="{{ redirection.target }}">{{ redirection.target[:50] }}</a></td>
+                            <td class="whitespace-nowrap px-6 py-4 text-purple-600 underline">
+                                <a href="{{ redirection.target }}">{{ format_url(redirection.target, 50) }}</a>
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4 cursor-help underline decoration-dotted" title="{{ redirection.created_at }}">
                                 {{ redirection.created_at.strftime("%d/%m/%Y") }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">{{ redirection.access_count }}</td>
                             {% if can_write %}
                                 <td class="whitespace-nowrap px-6 text-2xl">
-                                    <span class="save text-blue-700 cursor-pointer fa-solid fa-floppy-disk"></span>
-                                    <span class="delete text-red-600 cursor-pointer fa-solid fa-trash"></span>
+                                    <span class="edit text-blue-700 cursor-pointer fa-solid fa-pen" title="Edit"></span>
+                                    <span class="delete text-red-600 cursor-pointer fa-solid fa-trash" title="Delete"></span>
                                 </td>
                             {% endif %}
                         </tr>

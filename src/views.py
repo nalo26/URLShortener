@@ -8,6 +8,12 @@ from . import db
 views = Blueprint("views", __name__)
 
 
+@views.route("/favicon.ico")
+@views.route("/robots.txt")
+def static_from_root():
+    return redirect(url_for("static", filename=request.path[1:]))
+
+
 @views.route("/", methods=["GET"])
 def index():
     if not (current_user and current_user.is_authenticated):
@@ -109,3 +115,13 @@ def delete_redirection(path):
     db.session.commit()
 
     return "OK", 200
+
+
+@views.context_processor
+def processor():
+    def format_url(url, size=50):
+        if len(url) > size:
+            return url[: size - 3] + "..."
+        return url
+
+    return dict(format_url=format_url)
