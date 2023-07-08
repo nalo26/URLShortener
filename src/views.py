@@ -68,20 +68,24 @@ def redirection(path):
 @login_required
 def create_redirection(path):
     if current_user.level != Level.WRITE:
+        flash("You don't have permission to create redirection", "error")
         return "Forbidden", 403
 
     redirection = Redirection.query.get(path)
     if redirection is not None:
+        flash("Redirection with this name already exists", "error")
         return "Conflict", 409
 
     target = request.json.get("target")
     if target is None:
+        flash("Target is required", "error")
         return "Bad Request", 400
 
     redirection = Redirection(source=path, target=target)
     db.session.add(redirection)
     db.session.commit()
 
+    flash("Successfully created redirection", "success")
     return "OK", 200
 
 
@@ -89,15 +93,18 @@ def create_redirection(path):
 @login_required
 def update_redirection(path):
     if current_user.level != Level.WRITE:
+        flash("You don't have permission to update redirection", "error")
         return "Forbidden", 403
 
     redirection = Redirection.query.get(path)
     if redirection is None:
+        flash("Redirection does not exists", "error")
         return "Not Found", 404
 
     redirection.target = request.json.get("target", redirection.target)
     db.session.commit()
 
+    flash("Successfully updated redirection", "success")
     return "OK", 200
 
 
@@ -105,15 +112,18 @@ def update_redirection(path):
 @login_required
 def delete_redirection(path):
     if current_user.level != Level.WRITE:
+        flash("You don't have permission to delete redirection", "error")
         return "Forbidden", 403
 
     redirection = Redirection.query.get(path)
     if redirection is None:
+        flash("Redirection does not exists", "error")
         return "Not Found", 404
 
     db.session.delete(redirection)
     db.session.commit()
 
+    flash("Successfully deleted redirection", "success")
     return "OK", 200
 
 
