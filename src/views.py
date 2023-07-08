@@ -39,3 +39,14 @@ def index_post():
     # user logged in
     # TODO: do things
     return redirect(url_for("views.index"))
+
+
+@views.route("/<path:path>", methods=["GET"])
+def redirection(path):
+    redirection = Redirection.query.get(path)
+    if redirection is None:
+        return render_template("404.html"), 404
+
+    redirection.access_count += 1
+    db.session.commit()
+    return redirect(redirection.target)
