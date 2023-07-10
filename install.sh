@@ -8,7 +8,7 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-if [ -d .venv]; then
+if [ -d .venv ]; then
     rm -rf .venv
 fi
 
