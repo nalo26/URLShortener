@@ -2,9 +2,8 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash
 
-from database.models import Access, Level, Redirection
-
 from . import db
+from .database.models import Access, Level, Redirection
 
 views = Blueprint("views", __name__)
 
