@@ -2,7 +2,7 @@ import enum
 
 from flask_login import UserMixin
 
-from . import db
+from .. import db
 
 
 class Level(enum.Enum):
