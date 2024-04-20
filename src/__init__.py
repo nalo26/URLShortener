@@ -32,7 +32,7 @@ def create_app():
     login_manager.login_message_category = "error"
     login_manager.init_app(app)
 
-    from .models import Access
+    from database.models import Access
 
     @login_manager.user_loader
     def load_user(_id):
