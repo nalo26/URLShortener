@@ -1,8 +1,6 @@
 import os
-from dotenv import load_dotenv
 
-load_dotenv(".env")
-
-bind = os.getenv("WEB_HOST") + ":" + str(os.getenv("WEB_PORT"))
+bind = f"{os.getenv('WEB_HOST')}:{os.getenv('WEB_PORT')}"
+workers = 1
 accesslog = "-"
 access_log_format = '%(t)s %({x-forwarded-for}i)s %(l)s "%(r)s" %(s)s'  # "%(a)s"'
